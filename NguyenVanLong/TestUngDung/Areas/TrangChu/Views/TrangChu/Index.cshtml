@@ -1,0 +1,374 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@using TestUngDung.Common;
+@model PagedList.IPagedList<ModelEF.Model.Product>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/Assets/TrangChu/images/favicon.png">
+    <title>Welcome to FlatShop</title>
+    <link href="~/Assets/TrangChu/css/bootstrap.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="~/Assets/TrangChu/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Assets/TrangChu/css/flexslider.css" type="text/css" media="screen" />
+    <link href="~/Assets/TrangChu/css/sequence-looptheme.css" rel="stylesheet" media="all" />
+    <link href="~/Assets/TrangChu/css/style.css" rel="stylesheet">
+    <!--[if lt IE 9]><script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]-->
+    <style>
+        .pagination {
+            display: flex;
+            margin: 0 1rem;
+        }
+
+            .pagination li {
+                width: auto;
+            }
+
+        #featured li, #hot li, #brand li, #braldLogo li {
+            width: auto;
+        }
+
+        .products {
+            min-height: 340px;
+            position: relative;
+        }
+
+            .products .button_group {
+                position: absolute;
+                bottom: 0;
+            }
+
+            .products .price {
+                position: absolute;
+                bottom: 13%;
+            }
+
+        .thumbnail {
+            margin: 0 auto;
+            height: 210px;
+        }
+        .logo {
+            top: 18px;
+            left:-50px;
+        }
+        
+    </style>
+</head>
+<body id="home">
+    <div class="wrapper">
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <div class="logo"><a href="#"><img src="~/Assets/images/logo.png" alt="FlatShop"></a></div>
+                    </div>
+                    <div class="col-md-10 col-sm-10">
+                        <div class="header_top">
+                            <div class="row">
+                                <div class="col-md-3">
+
+                                </div>
+
+                                <div class="col-md-9">
+                                    <ul class="usermenu">
+                                        <li>
+                                            @{
+                                                var session = Session[Constants.USER_SESSION];
+                                                var link = "/admin/home/index";
+                                                if (session == null)
+                                                {
+                                                    link = "/admin/login";
+                                                }
+
+                                            }
+                                            <a href="@link" class="log">
+                                                <span class="username">
+                                                    @{
+                                                        var login = "Login";
+
+                                                        if (session != null)
+                                                        { @session}
+                                                        else
+                                                        {
+                                                        @login
+                                                        }
+                                                    }
+
+                                                </span>
+
+                                            </a>
+                                        </li>
+                                        @{
+                                            if (session != null)
+                                            { }
+                                            else
+                                            {
+                                                <li><a href="#" class="reg">Register</a></li>
+                                            }
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="header_bottom">
+                            <ul class="option">
+                                <li id="search" class="search">
+                                    <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Enter your search term..." type="text" value="" name="search"></form>
+                                </li>
+                                <li class="option-cart">
+                                    <a href="#" class="cart-icon">cart <span class="cart_no">0</span></a>
+                                    <ul class="option-cart-item">
+                                        <li>
+                                            <div class="cart-item">
+                                                <h3> List empty</h3>
+                                            </div>
+                                        </li>
+                                        <li><span class="total">Total <strong>$00.00</strong></span><button class="checkout" onClick="location.href='checkout.html'">CheckOut</button></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                            <div class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li class="active dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home</a>
+
+                                    </li>
+
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Danh mục xe đạp</a>
+                                        <div class="dropdown-menu mega-menu">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <ul class="mega-menu-links">
+                                                        <li><a href="#">Xe đạp địa hình</a></li>
+                                                        <li><a href="#">Xe đạp điện</a></li>
+                                                        <li><a href="#">Xe đạp gấp</a></li>
+                                                        <li><a href="#">Xe đạp thành phố</a></li>
+                                                        <li><a href="#">Xe đạp trẻ em</a></li>
+
+                                                        <li><a href="#">Xe đạp đua</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li><a href="#">Tin giải đấu</a></li>
+                                    <li><a href="#">Giới thiệu</a></li>
+                                    <li><a href="#">contact us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="hom-slider">
+            <div class="container">
+                <div id="sequence">
+                    <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                    <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                    <ul class="sequence-canvas">
+                        <li class="animate-in">
+                            <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Paris show 2014</span></div>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Collection For Winter</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500 text-center">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="#">More Details</a></div>
+                            <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="https://cdn.pixabay.com/photo/2020/12/24/00/47/cyclist-5856202_960_720.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400">
+                                <h1>Collection For Winter</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500">
+                                <h2>Etiam velit purus, luctus vitae velit sedauctor<br>egestas diam, Etiam velit purus.</h2>
+                            </div>
+                            <div class="flat-button caption5 formLeft delay600"><a class="more" href="#">More Details</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="https://cdn.pixabay.com/photo/2017/01/31/17/31/athlete-2025775_960_720.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>New Fashion of 2013</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500 text-center">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="#">More Details</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="https://cdn.pixabay.com/photo/2017/01/31/17/04/athlete-2025602_960_720.png" alt=""></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="promotion-banner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><img src="images/promotion-01.png" alt=""></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><img src="images/promotion-02.png" alt=""></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><img src="images/promotion-03.png" alt=""></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="container_fullwidth">
+            <div class="container">
+                <div class="hot-products">
+                    <h3 class="title"><strong>All</strong> Products</h3>
+
+                    <ul id="hot">
+                        <li>
+                            @{ var money = ""; }
+                                <div class="row">
+                                    @foreach (var item in Model)
+                                    {
+
+                                        {
+                                            money = string.Format("{0:#,##0}", item.UnitCost);
+                                        }
+
+                                        <div class="col-md-3 col-sm-6">
+                                            <div class="products">
+                                                @*<div class="offer">- %20</div>*@
+                                                <div class="thumbnail"><a href="#"><img src="@item.Image" alt="Product Name"></a></div>
+                                                <div class="productname">@item.Name</div>
+                                                <h4 class="price">@money VNĐ</h4>
+                                                <div class="button_group"><button class="button add-cart" type="button">Add To Cart</button><button class="button compare" type="button"><i class="fa fa-exchange"></i></button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="clearfix"></div>
+                                    <div>
+                                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = @ViewBag.SearchString }))
+                                    </div>
+                                </div>
+
+                            </li>
+
+                        <li>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="products">
+                                        <div class="offer">- %20</div>
+                                        <div class="thumbnail"><a href="#"><img src="images/products/small/products-01.png" alt="Product Name"></a></div>
+                                        <div class="productname">Iphone 5s Gold 32 Gb 2013</div>
+                                        <h4 class="price">$451.00</h4>
+                                        <div class="button_group"><button class="button add-cart" type="button">Add To Cart</button><button class="button compare" type="button"><i class="fa fa-exchange"></i></button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="products">
+                                        <div class="thumbnail"><a href="#"><img src="images/products/small/products-02.png" alt="Product Name"></a></div>
+                                        <div class="productname">Iphone 5s Gold 32 Gb 2013</div>
+                                        <h4 class="price">$451.00</h4>
+                                        <div class="button_group"><button class="button add-cart" type="button">Add To Cart</button><button class="button compare" type="button"><i class="fa fa-exchange"></i></button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="products">
+                                        <div class="offer">New</div>
+                                        <div class="thumbnail"><a href="#"><img src="images/products/small/products-03.png" alt="Product Name"></a></div>
+                                        <div class="productname">Iphone 5s Gold 32 Gb 2013</div>
+                                        <h4 class="price">$451.00</h4>
+                                        <div class="button_group"><button class="button add-cart" type="button">Add To Cart</button><button class="button compare" type="button"><i class="fa fa-exchange"></i></button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="products">
+                                        <div class="thumbnail"><a href="#"><img src="images/products/small/products-04.png" alt="Product Name"></a></div>
+                                        <div class="productname">Iphone 5s Gold 32 Gb 2013</div>
+                                        <h4 class="price">$451.00</h4>
+                                        <div class="button_group"><button class="button add-cart" type="button">Add To Cart</button><button class="button compare" type="button"><i class="fa fa-exchange"></i></button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="footer">
+            <div class="footer-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="footer-logo"><a href="#"><img src="~/Assets/images/logo.png" alt=""></a></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Contact <strong>Info</strong></h4>
+                            <p>No. 08, Nguyen Trai, Hanoi , Vietnam</p>
+                            <p>Call Us : (084) 1900 1008</p>
+                            <p>Email : michael@leebros.us</p>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Customer<strong> Support</strong></h4>
+                            <ul class="support">
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">Payment Option</a></li>
+                                <li><a href="#">Booking Tips</a></li>
+                                <li><a href="#">Infomation</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4 class="title">Get Our <strong>Newsletter </strong></h4>
+                            <p>Lorem ipsum dolor ipsum dolor.</p>
+                            <form class="newsletter">
+                                <input type="text" name="" placeholder="Type your email....">
+                                <input type="submit" value="SignUp" class="button">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Copyright © 2021</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social-icon">
+                                <li><a href="#" class="linkedin"></a></li>
+                                <li><a href="#" class="google-plus"></a></li>
+                                <li><a href="#" class="twitter"></a></li>
+                                <li><a href="#" class="facebook"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript==================================================-->
+    <script type="text/javascript" src="~/Assets/TrangChu/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="~/Assets/TrangChu/js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="~/Assets/TrangChu/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Assets/TrangChu/js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="~/Assets/TrangChu/js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="~/Assets/TrangChu/js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="~/Assets/TrangChu/js/script.min.js"></script>
+</body>
+</html>

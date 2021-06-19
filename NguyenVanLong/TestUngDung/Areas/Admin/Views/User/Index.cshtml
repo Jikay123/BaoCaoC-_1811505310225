@@ -1,0 +1,136 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model PagedList.IPagedList<ModelEF.Model.UserAccount>
+
+@{
+    ViewBag.Title = "Quản lý người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #titleMain {
+        font-size: 20px;
+    }
+
+    .form-group input#buttonMain {
+        padding: 10px 15px;
+        width: 200px;
+    }
+
+    .status {
+        color: blue;
+        font-weight: bold;
+    }
+</style>
+
+@section header{
+    <div id="titleMain">
+        <i class="fa fa-book"></i>&nbsp;
+        Quản lý người dùng
+    </div>
+}
+@section footerjs {
+    <script>
+        function reloadPage() {
+            setTimeout(() => {
+                window.location.reload();
+            }, 500)
+        }
+    </script>
+}
+
+
+@using (Html.BeginForm("Index", "User", FormMethod.Get))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="col-lg-12 form-group">
+        <div class="col-md-6">
+            @*@Html.ActionLink("Tạo người dùng mới", "Create", "User", null, new { @class = "btn btn-danger" })*@
+        </div>
+        <div class="col-md-4">
+            <input id="input_search" onfocus="this.value=''" type="text" value="@ViewBag.SearchString" name="searchString" placeholder="Nhập từ khóa tìm kiếm" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+        </div>
+    </div>
+}
+<style>
+</style>
+
+<table class="table">
+    <tr>
+        <th>
+            STT
+        </th>
+        <th>
+            Tên đăng nhập
+        </th>
+        <th>
+            Mật khẩu
+        </th>
+        <th>Status</th>
+
+        <th style="text-align:center">Hành động</th>
+    </tr>
+    @{ var i = 1;}
+    @if (Model.Count() <= 0)
+    {
+        <tr><td colspan="5">List none</td></tr>
+    }
+    @{ var idHtml = ""; }
+    @foreach (var item in Model)
+    {
+
+        @*if (item.Status == "blocked")
+            {
+                @idHtml = "Id";
+            }
+            else
+            {
+                @idHtml = @item.ID.ToString();
+                }*@
+
+
+
+        <tr id="row_@item.ID">
+            <td>
+                @i
+            </td>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                @item.Password
+            </td>
+            <td >
+                @Ajax.ActionLink(item.Status, "Status", new { @Styles = "color:blue;", @ID = item.ID }, new AjaxOptions
+           {
+
+               Confirm = "Bạn muốn thay đổi trạng thái người dùng này?",
+               HttpMethod = "Post",
+               OnSuccess="$(document).ready(function() {$('.status').click(function() {location.reload});",
+           }, new { @class = "status", onclick = "reloadPage()" } )
+               
+            </td>
+
+            <td style="display:inline-flex; justify-content: space-around; width:100%">
+               
+                <div id="removeItem" style="color:red;cursor:pointer">
+                    @Ajax.ActionLink(" ", "Delete", new { @ID = item.ID }, new AjaxOptions
+               {
+                   Confirm = "Bạn muốn xóa người dùng này?",
+                   OnComplete = "$('#row_" +@item.ID + "').remove()",
+                   HttpMethod = "Delete"
+               }, new {@class= "glyphicon glyphicon-trash",@id="removeItem", onclick = "reloadPage()" })
+                </div>
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+<div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = @ViewBag.SearchString }))
+</div>
+

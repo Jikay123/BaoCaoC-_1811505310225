@@ -1,0 +1,235 @@
+﻿@model ModelEF.Model.Product
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    img#imgProduct {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+    }
+
+    #titleMain {
+        font-size: 20px;
+    }
+
+    .form-group input#buttonMain {
+        padding: 10px 15px;
+        width: 200px;
+    }
+    .button__action {
+        display:flex;
+        margin:0;
+        justify-content:space-around;
+        align-items:center;
+        align-content:center;   
+        align-self:center;
+        padding:1rem;
+    }
+    .col-md-6 {
+        margin:08px auto;
+    }
+    .glyphicon.glyphicon-edit, .glyphicon.glyphicon-trash {
+        font-size: 30px;
+    }
+</style>
+
+@section header{
+    <div id="titleMain">
+        <i class="fa fa-camera"></i>&nbsp;Chi tiết sản phẩm
+    </div>
+
+}
+
+@section footerjs {
+
+    <script>
+        function reloadPage() {
+            setTimeout(() => {
+                window.location.reload();
+            }, 500)
+        }
+    </script>
+}
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="col-lg-12 form-group">
+                <div class="col-md-6">
+                    @Html.ActionLink("Quay lại", "Index", "Product", null, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+
+            <table class="table">
+                <tr>
+                    <th>
+                        Mã sản phẩm
+                    </th>
+                    <th>
+                        Tên sản phẩm
+                    </th>
+                    <th>
+                        Tên danh mục
+                    </th>
+                    <th>
+                        Ảnh
+                    </th>
+                    <th>
+                        Đơn giá
+                    </th>
+                    <th>
+                        Số lượng
+                    </th>
+                    <th>
+                        Miêu tả chi tiết
+                    </th>
+                    <th>Trạng thái</th>
+                    <th style="text-align:center; width:15%">Hành động</th>
+                </tr>
+                <tr id="row_@Html.ValueFor(model => model.ID)">
+                    <td>
+                        @Html.ValueFor(model => model.ID)
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => model.Name)
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => model.Category.Name)
+                    </td>
+                    <td>
+                        <img id="imgProduct" src="@Html.ValueFor(model => model.Image)" />
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => model.UnitCost)
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => model.Quantity)
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => model.Description)
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => model.Status)
+                    </td>
+
+                    <td style="display:inline-flex; justify-content: space-around; width:100%">
+                        <div>
+                            @Html.ActionLink(" ", "Edit", new { Id_Product = @Html.ValueFor(model => model.ID)},
+                           new { @class = "glyphicon glyphicon-edit" })
+                        </div>
+                        <div style="color:red;cursor:pointer">
+                            @Ajax.ActionLink(" ", "Delete", new { @Id_Product = @Html.ValueFor(model => model.ID) }, new AjaxOptions
+                       {
+                           Confirm = "Bạn muốn xóa danh mục này?",
+                           OnComplete = "$('#row_" + @Html.ValueFor(model => model.ID) + "').remove()",
+                           HttpMethod = "Post"
+                       }, new {@class= "glyphicon glyphicon-trash" , onclick = "reloadPage()" })
+                        </div>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    }*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="col-lg-12 form-group">
+            <div class="col-md-6">
+                @Html.ActionLink("Quay lại", "Index", "Product", null, new { @class = "btn btn-primary" })
+            </div>
+            
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ID , htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.ValueFor(model => model.ID)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.ValueFor(model => model.Name)
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.ValueFor(model => model.Quantity)
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.ValueFor(model => model.Category.Name)
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                <img id="" src="@Html.ValueFor(model => model.Image)" alt="image product" />
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnitCost, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.ValueFor(model => model.UnitCost)
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.ValueFor(model => model.Description)
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.ValueFor(model => model.Status)
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Hành động :", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6 button__action">
+                <div>
+                    @Html.ActionLink(" ", "Edit", new { Id_Product = @Html.ValueFor(model => model.ID)},
+                   new { @class = "glyphicon glyphicon-edit" })
+                </div>
+                <div style="color:red;cursor:pointer">
+                    @Ajax.ActionLink(" ", "Delete", new { @Id_Product = @Html.ValueFor(model => model.ID) }, new AjaxOptions
+               {
+                   Confirm = "Bạn muốn xóa danh mục này?",
+                   OnComplete = "$('#row_" + @Html.ValueFor(model => model.ID) + "').remove()",
+                   HttpMethod = "Post"
+               }, new {@class= "glyphicon glyphicon-trash" , onclick = "reloadPage()" })
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+
